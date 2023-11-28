@@ -1,7 +1,7 @@
 {
-    "name": "My YT Bookmarks",
+    "name": "YT Rotate",
     "version": "0.1.0",
-    "description": "Saving timestamps in YT videos",
+    "description": "Rotate Youtube videos",
     "permissions": ["storage", "tabs"],
     "host_permissions": ["https://*.youtube.com/*"],
     "background": {
