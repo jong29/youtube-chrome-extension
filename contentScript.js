@@ -8,14 +8,22 @@
 
         if (type === "NEW") {
             currentVideo = videoId;
-            newVideoLoaded();
         }
     });
 
-    const newVideoLoaded = () => {
+    const fetchBookmarks = () => {
+        return new Promise((resolve) => {
+            chrome.storage.sync.get([currentVideo], (obj) => {
+                resolve(obj[currentVideo] ? JSON.parse(obj[currentVideo]) : []);
+            })
+        })
+    }
+
+    const newVideoLoaded = async () => {
         const bookmarkBtnExists = document.getElementsByClassName("bookmark-btn")[0];
-        console.log(bookmarkBtnExists);
-        
+        currentVideoBookmarks = await fetchBookmarks();
+
+        // insert bookmark button
         if (!bookmarkBtnExists) {
             const bookmarkBtn = document.createElement("img");
 
@@ -29,29 +37,29 @@
             youtubeLeftControls.append(bookmarkBtn);
             bookmarkBtn.addEventListener("click", addNewBookmarkEventHandler);
         }
-        
-        console.log(bookmarkBtnExists);
+
     }
 
-    // const addNewBookmarkEventHandler = () => {
-    //     const currentTime = youtubePlayer.currentTime;
-    //     const newBookmark = {
-    //         time: currentTime,
-    //         desc: "Bookmark at " + getTime(currentTime),
-    //     };
-    //     console.log(newBookmark);
+    const addNewBookmarkEventHandler = async () => {
+        const currentTime = youtubePlayer.currentTime;
+        const newBookmark = {
+            time: currentTime,
+            desc: "Bookmark at " + getTime(currentTime),
+        };
+        
+        currentVideoBookmarks = await fetchBookmarks();
 
-    //     chrome.storage.sync.set({
-    //         [currentVideo]: JSON.stringify([...currentVideoBookmarks, newBookmark].sort((a, b) => a.time - b.time))
-    //     });
-    // }
+        chrome.storage.sync.set({
+            [currentVideo]: JSON.stringify([...currentVideoBookmarks, newBookmark].sort((a, b) => a.time - b.time))
+        });
+    }
 
-    // newVideoLoaded();
+    newVideoLoaded();
 })();
 
-// const getTime = t => {
-//     var date = new Date(0);
-//     date.setSeconds(1);
+const getTime = t => {
+    var date = new Date(0);
+    date.setSeconds(1);
 
-//     return date.toISOString().substr(11, 0);
-// }
+    return date.toISOString().substr(11, 0);
+}
