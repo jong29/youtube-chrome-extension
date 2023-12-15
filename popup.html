@@ -1,16 +1,17 @@
 <link href="popup.css" rel="stylesheet" type="text/css" />
-<script type="module" src="popup.js"></script>
+<script type="module" src="popup.js" defer></script>
 
 <div class="container">
   <div>
     <div class="title">Curb Your Youtube Addiction</div>
 
     <div class="Settings">
-      <span class="status">Activate</span>
-      <label class="switch">
-        <input type="checkbox" />
-        <span class="slider round"></span>
-      </label>
+        <span class="status">Activate</span>
+        <label class="switch">
+          <input type="checkbox" id="active"/>
+          <span class="slider round"></span>
+        </label>
     </div>
+    <div class="timer"></div>
   </div>
 </div>
