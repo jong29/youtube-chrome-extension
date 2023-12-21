@@ -14,24 +14,24 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 document.getElementById("active").addEventListener("change", (e) => {
-  console.log(e);
+  const timer = document.querySelector(".timer");
   if (e.target.checked) {
     console.log("checked");
-    const timer = document.querySelector(".timer");
     console.log(timer);
     timer.innerHTML = `
-       <div>
-       time to watch: <input id="time" type='text' /> <br>
-       !!!!!time to watch: <input id="time2" type='time' /> <br>
-       watch one video: <input id="one-vid" type='checkbox' /> <br>
-       <button id="start-btn">Start</button>
-       </div>
-       `;
+      <div>
+      time to watch: <input id="time" type='text' /> <br>
+      !!!!!time to watch: <input id="time2" type='time' /> <br>
+      watch one video: <input id="one-vid" type='checkbox' /> <br>
+      <button id="start-btn">Start</button>
+      </div>
+      `;
 
-       const timeInput = document.getElementById("time");
-       console.log(timeInput);
+    const timeInput = document.getElementById("time");
+    console.log(timeInput);
     // add event listeners to each input type
   } else {
     console.log("unchecked");
+    timer.innerHTML = '';
   }
 });
