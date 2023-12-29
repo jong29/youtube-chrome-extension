@@ -12,6 +12,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (activeTab.url.includes("youtube.com/watch") && currentVideo) {
     chrome.storage.sync.get([]);
+  } else {
+    const container = document.getElementById("container");
+    container.innerHTML = "<div>This is not a youtube video</div>";
   }
 });
 
