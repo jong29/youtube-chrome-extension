@@ -1,5 +1,7 @@
 import { getActiveTabURL } from "./utils.js";
 
+const endState = {activated : false, watchTime : 0, oneVideo: false};
+
 // adding a new bookmark row to the popup
 document.addEventListener("DOMContentLoaded", async () => {
   const activeTab = await getActiveTabURL();
@@ -16,22 +18,24 @@ document.addEventListener("DOMContentLoaded", async () => {
 document.getElementById("active").addEventListener("change", (e) => {
   const timer = document.querySelector(".timer");
   if (e.target.checked) {
+    endState.activated = true;
     console.log("checked");
     console.log(timer);
     timer.innerHTML = `
       <div>
-      time to watch: <input id="time" type='text' /> <br>
-      !!!!!time to watch: <input id="time2" type='time' /> <br>
+      time to watch: <input id="time" type='time' /> <br>
       watch one video: <input id="one-vid" type='checkbox' /> <br>
       <button id="start-btn">Start</button>
       </div>
-      `;
+    `;
 
-    const timeInput = document.getElementById("time");
+    document.getElementById("time");
+
     console.log(timeInput);
     // add event listeners to each input type
   } else {
     console.log("unchecked");
     timer.innerHTML = '';
-  }
+    endState.activated = false;
+ }
 });
