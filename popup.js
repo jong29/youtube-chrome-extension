@@ -22,20 +22,23 @@ document.getElementById("active").addEventListener("change", (e) => {
   const timer = document.querySelector(".timer");
   if (e.target.checked) {
     endState.activated = true;
-    console.log("checked");
-    console.log(timer);
     timer.innerHTML = `
       <div>
-      time to watch: <input id="time" type='time' /> <br>
-      watch one video: <input id="one-vid" type='checkbox' /> <br>
-      <button id="start-btn">Start</button>
+      watch one video: <input id="oneVid" type='checkbox' /> <br>
+      time to watch: <input id="time" type="number" /> <br>
+      <button id="setBtn">SET</button>
       </div>
     `;
 
-    document.getElementById("time");
-
-    console.log(timeInput);
     // add event listeners to each input type
+    document.getElementById("setBtn").addEventListener("click", (e) => {
+      endState.watchTime = document.getElementById("time").value;
+    });
+
+    document.getElementById("oneVid").addEventListener("change", (e) => {
+      endState.activated = e.target.checked;
+    });
+
   } else {
     console.log("unchecked");
     timer.innerHTML = '';
