@@ -3,7 +3,6 @@ import { getActiveTabURL } from "./utils.js";
 const endState = { activated: false, watchTime: 0, oneVideo: false };
 
 const renderForm = () => {
-  console.log("debug");
   const timer = document.querySelector(".timer");
   endState.activated = true;
   timer.innerHTML = `
@@ -24,29 +23,38 @@ const renderForm = () => {
   });
 };
 
+const renderBlank = () => {
+  const timer = document.querySelector(".timer");
+  timer.innerHTML = "";
+  endState.activated = false;
+}
+
 // adding a new bookmark row to the popup
 document.addEventListener("DOMContentLoaded", async () => {
   const activeTab = await getActiveTabURL();
   
-  const storageActive = chrome.storage.local.get("activated");
-  console.log();
-
   if (!activeTab.url.includes("youtube.com/watch")) {
     const container = document.getElementById("container");
     container.innerHTML = "<div>This is not a youtube video</div>";
-  } else if (chrome.storage.local.get(["activated"]).then(isActive => isActive)) {
-    renderForm();
-  }
+  } else {
+    chrome.storage.local.get(["activated"]).then(isActive => {
+      if (isActive && isActive.activated) {
+        document.getElementById("active").checked = true;
+        renderForm();
+      } else {
+        renderBlank();
+      }
+    });
+}
 });
 
 document.getElementById("active").addEventListener("change", (e) => {
   const timer = document.querySelector(".timer");
-  chrome.storage.local.set({ activated: true });
   if (e.target.checked) {
+    chrome.storage.local.set({ activated: true });
     renderForm();
   } else {
-    console.log("unchecked");
-    timer.innerHTML = "";
-    endState.activated = false;
+    chrome.storage.local.set({ activated: false });
+    renderBlank();
   }
 });
