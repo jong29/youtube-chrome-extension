@@ -1,4 +1,5 @@
 import { getActiveTabURL } from "./utils.js";
+import startTimer from "./timer.js";
 
 const endState = { activated: false, watchTime: 0, oneVideo: false };
 
@@ -20,7 +21,9 @@ const renderForm = () => {
     const timerElement = document.createElement("div");
     const formContainer = document.getElementById("formContainer");
     timerElement.textContent = "00:00:00";
+    timerElement.setAttribute('id', 'timer');
     formContainer.appendChild(timerElement);
+    startTimer();
   });
 
   document.getElementById("oneVid").addEventListener("change", (e) => {
