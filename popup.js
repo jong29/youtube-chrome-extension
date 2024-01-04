@@ -16,14 +16,15 @@ const renderForm = () => {
 
   // add event listeners to each input type
   document.getElementById("setBtn").addEventListener("click", (e) => {
-    endState.watchTime = document.getElementById("time").value;
+    const timeToWatch = document.getElementById("time").value;
+    endState.watchTime = timeToWatch;
 
     const timerElement = document.createElement("div");
     const formContainer = document.getElementById("formContainer");
     timerElement.textContent = "00:00:00";
     timerElement.setAttribute('id', 'timer');
     formContainer.appendChild(timerElement);
-    startTimer();
+    startTimer(timeToWatch);
   });
 
   document.getElementById("oneVid").addEventListener("change", (e) => {
