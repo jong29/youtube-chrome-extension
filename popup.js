@@ -1,3 +1,6 @@
+// endState 오브젝트를 chrome.storage과local과 동기화 해서 상태관리한다
+
+
 import { getActiveTabURL } from "./utils.js";
 import startTimer from "./timer.js";
 
@@ -38,7 +41,7 @@ const renderForm = () => {
 const renderBlank = () => {
   const timer = document.querySelector(".timer");
   timer.innerHTML = "";
-  endState.activated = false;
+  // // State.activated = false;
 }
 
 // adding a new bookmark row to the popup
