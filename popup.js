@@ -1,5 +1,4 @@
-// endState 오브젝트를 chrome.storage과local과 동기화 해서 상태관리한다
-
+// need to keep track of time in seconds
 import { getActiveTabURL } from "./utils.js";
 import startTimer from "./timer.js";
 
@@ -16,21 +15,25 @@ const renderForm = () => {
       time to watch : <input id = "minutes" type = "number" min = "0" max = "59" /> mins <br>
         <button id="setBtn">SET</button>
       </div>`;
-    timer.innerHTML = innerForm;
+  timer.innerHTML = innerForm;
+
+  chrome.storage.local.get(["watchTime"]).then((o) => {
+    console.log("debug");
+    console.log(o.watchTime);
+    if (o && o.watchTime > 0) {
+      renderTimer(o.watchTime);
+      startTimer(o.watchTime);
+    }
+  });
 
   // add event listeners to each input type
   document.getElementById("setBtn").addEventListener("click", (e) => {
-
-    const timerElement = document.createElement("div");
-    const formContainer = document.getElementById("formContainer");
-
-    timerElement.textContent = "00:00:00";
-    timerElement.setAttribute('id', 'timer');
-    formContainer.appendChild(timerElement);
-
     const timeToWatch = document.getElementById("minutes").value;
-    endState.watchTime = timeToWatch;
-
+    if (timeToWatch && timeToWatch > 0) {
+      renderTimer(timeToWatch);
+      endState.watchTime = timeToWatch;
+      chrome.storage.local.set(endState);
+    }
     startTimer(timeToWatch);
   });
 
@@ -39,23 +42,36 @@ const renderForm = () => {
   });
 };
 
+const renderTimer = (minutes) => {
+  const timerElement = document.createElement("div");
+  const formContainer = document.getElementById("formContainer");
+
+  let hours = Math.floor(minutes / 60);
+  hours = hours < 10 ? "0" + hours : hours;
+
+  let remainingMinutes = minutes % 60;
+  remainingMinutes =
+    remainingMinutes < 10 ? "0" + remainingMinutes : remainingMinutes;
+
+  timerElement.textContent = hours + ":" + remainingMinutes + ":00";
+  timerElement.setAttribute("id", "timer");
+  formContainer.appendChild(timerElement);
+};
+
 const renderBlank = () => {
   const timer = document.querySelector(".timer");
   timer.innerHTML = "";
-  // // State.activated = false;
-}
+};
 
-// Event Listeners
 // -- start of script --
-// adding a new bookmark row to the popup
 document.addEventListener("DOMContentLoaded", async () => {
   const activeTab = await getActiveTabURL();
-  
+
   if (!activeTab.url.includes("youtube.com/watch")) {
     const container = document.getElementById("container");
     container.innerHTML = "<div>This is not a youtube video</div>";
   } else {
-    chrome.storage.local.get(["activated"]).then(isActive => {
+    chrome.storage.local.get(["activated"]).then((isActive) => {
       if (isActive && isActive.activated) {
         document.getElementById("active").checked = true;
         renderForm();
@@ -63,17 +79,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         renderBlank();
       }
     });
-}
+  }
 });
 
 // activate extension event
 document.getElementById("active").addEventListener("change", (e) => {
   const timer = document.querySelector(".timer");
   if (e.target.checked) {
-    chrome.storage.local.set({ activated: true });
+    endState.activated = true;
+    chrome.storage.local.set(endState);
     renderForm();
   } else {
-    chrome.storage.local.set({ activated: false });
+    chrome.storage.local.set(endState);
     renderBlank();
   }
 });
