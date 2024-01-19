@@ -1,11 +1,12 @@
 // endState 오브젝트를 chrome.storage과local과 동기화 해서 상태관리한다
 
-
 import { getActiveTabURL } from "./utils.js";
 import startTimer from "./timer.js";
 
+// state variables
 const endState = { activated: false, watchTime: 0, oneVideo: false };
 
+// rendering functions
 const renderForm = () => {
   const timer = document.querySelector(".timer");
   endState.activated = true;
@@ -44,6 +45,8 @@ const renderBlank = () => {
   // // State.activated = false;
 }
 
+// Event Listeners
+// -- start of script --
 // adding a new bookmark row to the popup
 document.addEventListener("DOMContentLoaded", async () => {
   const activeTab = await getActiveTabURL();
@@ -63,6 +66,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 }
 });
 
+// activate extension event
 document.getElementById("active").addEventListener("change", (e) => {
   const timer = document.querySelector(".timer");
   if (e.target.checked) {
