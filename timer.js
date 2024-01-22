@@ -3,19 +3,21 @@ let hours = 0;
 let minutes = 0;
 let seconds = 0;
 
-export default function startTimer(inputMinutes) {
-  minutes = inputMinutes;
+export default function startTimer(inputSeconds) {
+  seconds = inputSeconds % 60;
+  minutes = Math.floor(inputSeconds / 60) % 60;
+  hours = Math.floor(inputSeconds / 3600);
   const formattedTime = padTime(hours) + ':' + padTime(minutes) + ':' + padTime(seconds);
   document.getElementById('timer').innerText = formattedTime;
 
   timer = setInterval(decrementTimer, 1000);
   setTimeout(() => {
     clearInterval(timer);
-  }, minToMillis(inputMinutes));
+  }, secondsToMillis(inputSeconds));
 }
 
-const minToMillis = (mins) => {
-  return mins * 60 * 1000;
+const secondsToMillis = (seconds) => {
+  return mins * 1000;
 }
 
 function incrementTimer() {

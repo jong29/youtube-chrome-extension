@@ -3,7 +3,7 @@ import { getActiveTabURL } from "./utils.js";
 import startTimer from "./timer.js";
 
 // state variables
-const endState = { activated: false, watchTime: 0, oneVideo: false };
+const endState = { activated: false, watchTimeSeconds: 0, oneVideo: false };
 
 // rendering functions
 const renderForm = () => {
@@ -17,24 +17,22 @@ const renderForm = () => {
       </div>`;
   timer.innerHTML = innerForm;
 
-  chrome.storage.local.get(["watchTime"]).then((o) => {
-    console.log("debug");
-    console.log(o.watchTime);
-    if (o && o.watchTime > 0) {
-      renderTimer(o.watchTime);
-      startTimer(o.watchTime);
+  chrome.storage.local.get(["watchTimeSeconds"]).then((o) => {
+    if (o && o.watchTimeSeconds > 0) {
+      renderTimer(o.watchTimeSeconds);
+      startTimer(o.watchTimeSeconds);
     }
   });
 
   // add event listeners to each input type
   document.getElementById("setBtn").addEventListener("click", (e) => {
-    const timeToWatch = document.getElementById("minutes").value;
-    if (timeToWatch && timeToWatch > 0) {
-      renderTimer(timeToWatch);
-      endState.watchTime = timeToWatch;
+    const timeToWatchMinutes = document.getElementById("minutes").value;
+    if (timeToWatchMinutes && timeToWatchMinutes > 0) {
+      renderTimer(timeToWatchMinutes * 60);
+      endState.watchTimeSeconds = timeToWatchMinutes*60;
       chrome.storage.local.set(endState);
     }
-    startTimer(timeToWatch);
+    startTimer(timeToWatchMinutes);
   });
 
   document.getElementById("oneVid").addEventListener("change", (e) => {
@@ -42,18 +40,20 @@ const renderForm = () => {
   });
 };
 
-const renderTimer = (minutes) => {
+const renderTimer = (seconds) => {
   const timerElement = document.createElement("div");
   const formContainer = document.getElementById("formContainer");
 
-  let hours = Math.floor(minutes / 60);
+  let hours = Math.floor(seconds / 3600);
   hours = hours < 10 ? "0" + hours : hours;
 
-  let remainingMinutes = minutes % 60;
-  remainingMinutes =
-    remainingMinutes < 10 ? "0" + remainingMinutes : remainingMinutes;
+  let minutes = Math.floor(seconds / 60);
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  
+  let remainingSeconds = seconds % 60;
+  remainingSeconds = remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds;
 
-  timerElement.textContent = hours + ":" + remainingMinutes + ":00";
+  timerElement.textContent = hours + ":" + minutes + ":" + remainingSeconds;
   timerElement.setAttribute("id", "timer");
   formContainer.appendChild(timerElement);
 };
