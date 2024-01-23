@@ -41,6 +41,9 @@ const renderForm = () => {
 };
 
 const renderTimer = (seconds) => {
+  const timerElementExists = document.getElementById("timer");
+  if (timerElementExists) timerElementExists.remove();
+  
   const timerElement = document.createElement("div");
   const formContainer = document.getElementById("formContainer");
 
