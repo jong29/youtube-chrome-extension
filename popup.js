@@ -26,13 +26,13 @@ const renderForm = () => {
 
   // add event listeners to each input type
   document.getElementById("setBtn").addEventListener("click", (e) => {
-    const timeToWatchMinutes = document.getElementById("minutes").value;
-    if (timeToWatchMinutes && timeToWatchMinutes > 0) {
-      renderTimer(timeToWatchMinutes * 60);
-      endState.watchTimeSeconds = timeToWatchMinutes*60;
+    const timeToWatchSeconds = document.getElementById("minutes").value * 60;
+    if (timeToWatchSeconds && timeToWatchSeconds > 0) {
+      renderTimer(timeToWatchSeconds);
+      endState.watchTimeSeconds = timeToWatchSeconds;
       chrome.storage.local.set(endState);
     }
-    startTimer(timeToWatchMinutes);
+    startTimer(timeToWatchSeconds);
   });
 
   document.getElementById("oneVid").addEventListener("change", (e) => {
@@ -45,13 +45,13 @@ const renderTimer = (seconds) => {
   const formContainer = document.getElementById("formContainer");
 
   let hours = Math.floor(seconds / 3600);
-  hours = hours < 10 ? "0" + hours : hours;
+  hours = hours < 10 ? "0" + hours : "" + hours;
 
-  let minutes = Math.floor(seconds / 60);
-  minutes = minutes < 10 ? "0" + minutes : minutes;
+  let minutes = Math.floor(seconds / 60) % 60;
+  minutes = minutes < 10 ? "0" + minutes : "" + minutes;
   
   let remainingSeconds = seconds % 60;
-  remainingSeconds = remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds;
+  remainingSeconds = remainingSeconds < 10 ? "0" + remainingSeconds : "" + remainingSeconds;
 
   timerElement.textContent = hours + ":" + minutes + ":" + remainingSeconds;
   timerElement.setAttribute("id", "timer");
