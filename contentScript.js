@@ -1,7 +1,21 @@
+// try to understand the logic that is happening here
+// and fix it to suite what I want it to do
+
 (() => {
     let youtubeLeftControls, youtubePlayer;
     let currentVideo = "";
     let currentVideoBookmarks = [];
+
+    // get watch time (mycode)
+    const fetchWatchTime = () => {
+        return new Promise((resolve) => {
+            chrome.storage.local.get(["watchTimeSeconds"], (obj) => {
+                resolve(obj["watchTimeSeconds"] ? JSON.parse(obj["watchTimeSeconds"]) : 0);
+            });
+        });
+    };
+    // end of my code
+
 
     chrome.runtime.onMessage.addListener((obj, sender, response) => {
         const { type, value, videoId } = obj;
