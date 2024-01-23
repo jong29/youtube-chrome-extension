@@ -1,4 +1,6 @@
-// need to keep track of time in seconds
+// cannot window.close() unless opened using window.open()
+// just replace the whole screen with a black screen
+
 import { getActiveTabURL } from "./utils.js";
 import startTimer from "./timer.js";
 
