@@ -1,5 +1,5 @@
-// try to understand the logic that is happening here
-// and fix it to suite what I want it to do
+// need to add a listener to when the video ends
+// need to add a listener to when the timer is changed
 
 (() => {
     let youtubeLeftControls, youtubePlayer;
@@ -25,19 +25,14 @@
         }
     });
 
-    const fetchBookmarks = () => {
-        return new Promise((resolve) => {
-            chrome.storage.sync.get([currentVideo], (obj) => {
-                resolve(obj[currentVideo] ? JSON.parse(obj[currentVideo]) : []);
-            })
-        })
-    }
-
     const newVideoLoaded = async () => {
         const bookmarkBtnExists = document.getElementsByClassName("bookmark-btn")[0];
-        currentVideoBookmarks = await fetchBookmarks();
+        console.log(currentWatchTime, "current watch time");
+        setTimeout (() => {
+            alert("stop watching bro");
+        }, currentWatchTime * 1000);
 
-        // insert bookmark button
+        // add bookmark button to youtube video bookmark button
         if (!bookmarkBtnExists) {
             const bookmarkBtn = document.createElement("img");
 
@@ -49,23 +44,7 @@
             youtubePlayer = document.getElementsByClassName("video-stream")[0];
             
             youtubeLeftControls.append(bookmarkBtn);
-            bookmarkBtn.addEventListener("click", addNewBookmarkEventHandler);
         }
-
-    }
-
-    const addNewBookmarkEventHandler = async () => {
-        const currentTime = youtubePlayer.currentTime;
-        const newBookmark = {
-            time: currentTime,
-            desc: "Bookmark at " + getTime(currentTime),
-        };
-        
-        currentVideoBookmarks = await fetchBookmarks();
-
-        chrome.storage.sync.set({
-            [currentVideo]: JSON.stringify([...currentVideoBookmarks, newBookmark].sort((a, b) => a.time - b.time))
-        });
     }
 
     newVideoLoaded();
