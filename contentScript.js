@@ -18,13 +18,13 @@
   };
   // end of my code
 
-  chrome.runtime.onMessage.addListener((obj, sender, response) => {
-    const { type, value, videoId } = obj;
+  // chrome.runtime.onMessage.addListener((obj, sender, response) => {
+  //   const { type, value, videoId } = obj;
 
-    if (type === "NEW") {
-      currentVideo = videoId;
-    }
-  });
+  //   if (type === "NEW") {
+  //     currentVideo = videoId;
+  //   }
+  // });
 
   const newVideoLoaded = async () => {
     const bookmarkBtnExists =

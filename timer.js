@@ -17,7 +17,7 @@ export default function startTimer(inputSeconds) {
 }
 
 const secondsToMillis = (seconds) => {
-  return mins * 1000;
+  return seconds * 1000;
 }
 
 function incrementTimer() {
@@ -36,8 +36,6 @@ function incrementTimer() {
 }
 
 function decrementTimer() {
-  
-  console.log("decrement time");
   if (seconds == 0) {
     seconds = 59;
     if (minutes ==  0) {
