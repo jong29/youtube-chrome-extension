@@ -1,7 +1,7 @@
 {
-    "name": "YT Rotate",
+    "name": "Intentional Youtube",
     "version": "0.1.0",
-    "description": "Rotate Youtube videos",
+    "description": "Curb your Youtube Addiction by being intentional with your watch time",
     "permissions": ["storage", "tabs"],
     "host_permissions": ["https://*.youtube.com/*"],
     "background": {
