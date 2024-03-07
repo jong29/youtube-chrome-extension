@@ -43,7 +43,7 @@
         // insert black screen
         coverScreen();
         chrome.storage.local.set({ watchTimeSeconds: 0 });
-      }, currentWatchTime * 100);
+      }, currentWatchTime * 1000);
     }
 
     // add bookmark button to youtube video bookmark button
