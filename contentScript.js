@@ -7,7 +7,7 @@
   let currentVideoBookmarks = [];
 
   // get watch time (mycode)
-  const fetchWatchTime = () => {
+  const fetchWatchTime = async () => {
     return new Promise((resolve) => {
       chrome.storage.local.get(["watchTimeSeconds"], (obj) => {
         resolve(
@@ -18,18 +18,10 @@
   };
   // end of my code
 
-  // chrome.runtime.onMessage.addListener((obj, sender, response) => {
-  //   const { type, value, videoId } = obj;
-
-  //   if (type === "NEW") {
-  //     currentVideo = videoId;
-  //   }
-  // });
-
   const newVideoLoaded = async () => {
     const bookmarkBtnExists =
       document.getElementsByClassName("bookmark-btn")[0];
-    console.log(currentWatchTime, "current watch time");
+    const currentWatchTime = await fetchWatchTime();
     if (currentWatchTime > 0) {
       setTimeout(() => {
         alert("stop watching bro");
