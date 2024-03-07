@@ -3,8 +3,6 @@
 
 (() => {
   let youtubeLeftControls, youtubePlayer;
-  let currentVideo = "";
-  let currentVideoBookmarks = [];
 
   // get watch time (mycode)
   const fetchWatchTime = async () => {
@@ -16,17 +14,36 @@
       });
     });
   };
-  // end of my code
+
+  // add black screen to youtube page
+  const coverScreen = () => {
+    console.log("coverScreen");
+    const body = document.getElementsByTagName("body")[0];
+    const bodyFirstChild = body.firstChild;
+    const blackScreen = document.createElement("div");
+    blackScreen.style.position = "fixed";
+    blackScreen.style.width = "100%";
+    blackScreen.style.height = "100%";
+    blackScreen.style.backgroundColor = "black";
+    blackScreen.style.zIndex = "9999";
+    blackScreen.style.top = "0";
+    blackScreen.style.left = "0";
+    blackScreen.textContent = "You have reached your watch time limit";
+    body.insertBefore(blackScreen, bodyFirstChild);
+  }
 
   const newVideoLoaded = async () => {
     const bookmarkBtnExists =
       document.getElementsByClassName("bookmark-btn")[0];
+
     const currentWatchTime = await fetchWatchTime();
+
     if (currentWatchTime > 0) {
       setTimeout(() => {
-        alert("stop watching bro");
+        // insert black screen
+        coverScreen();
         chrome.storage.local.set({ watchTimeSeconds: 0 });
-      }, currentWatchTime * 1000);
+      }, currentWatchTime * 100);
     }
 
     // add bookmark button to youtube video bookmark button
