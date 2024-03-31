@@ -14,7 +14,7 @@ const renderForm = () => {
   let innerForm = `
       <div id = "formContainer">
       watch one video: <input id="oneVid" type='checkbox' /> <br>
-      time to watch : <input id = "minutes" type = "number" min = "0" max = "59" /> mins <br>
+      time to watch : <input id = "minutes" type = "number" min = "0" max = "59" /> mins <input id = "seconds" type = "number" min = "0" max = "59"/> secs <br>
         <button id="setBtn">SET</button>
       </div>`;
   timer.innerHTML = innerForm;
@@ -28,7 +28,8 @@ const renderForm = () => {
 
   // add event listeners to each input type
   document.getElementById("setBtn").addEventListener("click", (e) => {
-    const timeToWatchSeconds = document.getElementById("minutes").value * 60;
+    const timeToWatchMinutes = document.getElementById("minutes").value * 60;
+    const timeToWatchSeconds = timeToWatchMinutes + document.getElementById("seconds").value;
     if (timeToWatchSeconds && timeToWatchSeconds > 0) {
       renderTimer(timeToWatchSeconds);
       endState.watchTimeSeconds = timeToWatchSeconds;

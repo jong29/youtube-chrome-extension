@@ -38,6 +38,8 @@
 
     const currentWatchTime = await fetchWatchTime();
 
+    console.log("currentWatchTime", currentWatchTime);
+
     if (currentWatchTime > 0) {
       setTimeout(() => {
         // insert black screen
