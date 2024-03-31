@@ -10,3 +10,11 @@ chrome.tabs.onUpdated.addListener((tabId, tab) => {
     }
   });
   
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  console.log("sending message", message);
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    var activeTab = tabs[0];
+    chrome.tabs.sendMessage(activeTab.id, { message: "Hello from Background!", timeToWatchSeconds: message.timeToWatchSeconds });
+  });
+});

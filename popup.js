@@ -29,13 +29,14 @@ const renderForm = () => {
   // add event listeners to each input type
   document.getElementById("setBtn").addEventListener("click", (e) => {
     const timeToWatchMinutes = document.getElementById("minutes").value * 60;
-    const timeToWatchSeconds = timeToWatchMinutes + document.getElementById("seconds").value;
+    const timeToWatchSeconds = timeToWatchMinutes + parseInt(document.getElementById("seconds").value);
     if (timeToWatchSeconds && timeToWatchSeconds > 0) {
       renderTimer(timeToWatchSeconds);
       endState.watchTimeSeconds = timeToWatchSeconds;
       chrome.storage.local.set(endState);
     }
     startTimer(timeToWatchSeconds);
+    chrome.runtime.sendMessage({ timeToWatchSeconds });
   });
 
   document.getElementById("oneVid").addEventListener("change", (e) => {
