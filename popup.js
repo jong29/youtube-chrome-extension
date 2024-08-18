@@ -77,16 +77,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (!activeTab.url.includes("youtube.com/watch")) {
     const container = document.getElementById("container");
     container.innerHTML = "<div>This is not a youtube video</div>";
-  } else {
-    chrome.storage.local.get(["activated"]).then((isActive) => {
-      if (isActive && isActive.activated) {
-        document.getElementById("active").checked = true;
-        renderForm();
-      } else {
-        renderBlank();
-      }
-    });
-  }
+    return
+  } 
+  chrome.storage.local.get(["activated"]).then((isActive) => {
+    console.log("isActive", isActive);
+    console.log("isActive.activated", isActive.activated);
+    if (isActive && isActive.activated) {
+      document.getElementById("active").checked = true;
+      renderForm();
+    } else {
+      renderBlank();
+    }
+  });
 });
 
 // activate extension event
@@ -97,6 +99,7 @@ document.getElementById("active").addEventListener("change", (e) => {
     chrome.storage.local.set(endState);
     renderForm();
   } else {
+    endState.activated = false;
     chrome.storage.local.set(endState);
     renderBlank();
   }
