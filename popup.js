@@ -1,7 +1,7 @@
 // cannot window.close() unless opened using window.open()
 // just replace the whole screen with a black screen
 
-import { getActiveTabURL } from "./utils.js";
+import { getActiveTabURL, secondsToHMS } from "./utils.js";
 import startTimer from "./timer.js";
 
 // state variables
@@ -51,16 +51,7 @@ const renderTimer = (seconds) => {
   const timerElement = document.createElement("div");
   const formContainer = document.getElementById("formContainer");
 
-  let hours = Math.floor(seconds / 3600);
-  hours = hours < 10 ? "0" + hours : "" + hours;
-
-  let minutes = Math.floor(seconds / 60) % 60;
-  minutes = minutes < 10 ? "0" + minutes : "" + minutes;
-  
-  let remainingSeconds = seconds % 60;
-  remainingSeconds = remainingSeconds < 10 ? "0" + remainingSeconds : "" + remainingSeconds;
-
-  timerElement.textContent = hours + ":" + minutes + ":" + remainingSeconds;
+  timerElement.textContent = secondsToHMS(seconds);
   timerElement.setAttribute("id", "timer");
   formContainer.appendChild(timerElement);
 };
@@ -79,6 +70,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     container.innerHTML = "<div>This is not a youtube video</div>";
     return
   } 
+
   chrome.storage.local.get(["activated"]).then((isActive) => {
     console.log("isActive", isActive);
     console.log("isActive.activated", isActive.activated);
@@ -91,7 +83,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 });
 
-// activate extension event
+// activate extension functionality even listener
+// event listener checks for change in slider, and sets the activated state in local storage
 document.getElementById("active").addEventListener("change", (e) => {
   const timer = document.querySelector(".timer");
   if (e.target.checked) {

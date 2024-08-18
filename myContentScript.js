@@ -26,7 +26,7 @@ const coverScreen = () => {
   body.insertBefore(blackScreen, bodyFirstChild);
 }
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(async(message, sender, sendResponse) => {
     console.log("message received in content script", message);
     const currentWatchTime = await fetchWatchTime();
     console.log("currentWatchTime", currentWatchTime);
