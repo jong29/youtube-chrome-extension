@@ -14,7 +14,7 @@ const renderForm = () => {
   let innerForm = `
       <div id = "formContainer">
       watch one video: <input id="oneVid" type='checkbox' /> <br>
-      time to watch : <input id = "minutes" type = "number" min = "0" max = "59" /> mins <input id = "seconds" type = "number" min = "0" max = "59"/> secs <br>
+      time to watch : <input id = "minutes" type = "number" min = "0" max = "59" /> minutes <input id = "seconds" type = "number" min = "0" max = "59"/> seconds <br>
         <button id="setBtn">SET</button>
       </div>`;
   timer.innerHTML = innerForm;
