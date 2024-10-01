@@ -1,13 +1,13 @@
-// get watch time (mycode)
-const fetchWatchTime = async () => {
-  return new Promise((resolve) => {
-    chrome.storage.local.get(["watchTimeSeconds"], (obj) => {
-      resolve(
-        obj["watchTimeSeconds"] ? JSON.parse(obj["watchTimeSeconds"]) : 0
-      );
-    });
-  });
-};
+// DEPREATED: get watch time (mycode)
+// const fetchWatchTime = async () => {
+//   return new Promise((resolve) => {
+//     chrome.storage.local.get(["watchTimeSeconds"], (obj) => {
+//       resolve(
+//         obj["watchTimeSeconds"] ? JSON.parse(obj["watchTimeSeconds"]) : 0
+//       );
+//     });
+//   });
+// };
 
 // add black screen to youtube page
 const coverScreen = () => {
@@ -28,7 +28,10 @@ const coverScreen = () => {
 
 chrome.runtime.onMessage.addListener(async(message, sender, sendResponse) => {
     console.log("message received in content script", message);
-    const currentWatchTime = await fetchWatchTime();
+    // const currentWatchTime = await fetchWatchTime();
+    const currentWatchTime = await chrome.storage.local.get(["watchTimeSeconds"]).then((obj) => {
+      return obj["watchTimeSeconds"] || 0;
+    });
     console.log("currentWatchTime", currentWatchTime);
     if (currentWatchTime > 0) {
       setTimeout(() => {
